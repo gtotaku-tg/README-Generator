@@ -1,36 +1,70 @@
-// TODO: Include packages needed for this application
+// packages needed for this application
 const inquirer = require("inquirer");
-const fs = require("fs");
-
+// Importing Utilities module
+const util = require('util')
+// Importing File System module
+const fs = require('fs');
 const generateMarkdown = require("./utils/generateMarkdown");
+const questions = require("./utils/questions").questions;
 
-// TODO: Create an array of questions for user input
-const questions = [
-  {
-    type: "input",
-    message: "What's the title of the file?",
-    name: "title",
-  },
-  {
-    type:'input',
+// // Prompts the user with questions
+// async function promptUser() {
+//   try {
+//       const answers = await inquirer.prompt(questions);
+//       return answers;
+//   } catch (error) {
+//       console.error("Error while prompting:", error);
+//       throw error;
+//   }
+// }
 
+// Writes content to a file asynchronously
+const writeFileAsync = util.promisify(fs.writeFile);
+//initialize the app
+async function init() {
+  try {
+      const answers = await inquirer.prompt(questions);
+      let generateContent = generateMarkdown(answers);
+      await writeFileAsync('README.md', generateContent);
+      console.log('Successfully wrote to README.md');
+  } catch (error) {
+      console.error('Error while writing file', error);
   }
-];
-
-// TODO: Create a function to write README file
-// Create a file using fs package
-function writeToFile(fileName, data) {
-fs.writeFile('README.md', 'utf8', function())
 }
-
-// TODO: Create a function to initialize app
-// When the application start, firstly call inquirer prompts function
-function init() {
-  inquirer.prompt(questions).then((answers) => {
-    console.log(answers);
-
-  });
-}
-
 // Function call to initialize app
 init();
+  
+
+// // Create a function to write README file
+
+// const writeToFile = (fileName, data) => {
+
+// function writeToFile(data) {
+//   fs.writeFile('README.md', data, (err) =>
+//   err? console.log(err): console.log("README file is generated and saved!")
+//   );
+// }
+
+// // Create a function to initialize app
+// // When the application start, firstly call inquirer prompts function
+// function init() {
+//   inquirer
+//     .prompt(questions)
+//     .then(answers => {
+//       const readme = generateMarkdown(answers);
+//       writeToFile(readme);
+//     })
+//     // console.log(answers);
+   
+//     // .catch(error => {
+//     //   if(error.isTtyError) {
+//     //     console.log("Prompt couldn't be rendered in the current environment")
+//     //   }else{
+//     //     console.log("Something else went wrong")
+//     //   }
+//     // })
+// }
+  
+
+// // Function call to initialize app
+// init();
