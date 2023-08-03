@@ -5,6 +5,7 @@ const util = require('util')
 // Importing File System module
 const fs = require('fs');
 const generateMarkdown = require("./utils/generateMarkdown");
+const licenseBadge = require("./utils/badges");
 const questions = require("./utils/questions").questions;
 
 // // Prompts the user with questions
@@ -21,9 +22,10 @@ const questions = require("./utils/questions").questions;
 // Writes content to a file asynchronously
 const writeFileAsync = util.promisify(fs.writeFile);
 //initialize the app
-async function init() {
+async function init() { 
   try {
       const answers = await inquirer.prompt(questions);
+      answers.licenseBadge = licenseBadge(answers.license);
       let generateContent = generateMarkdown(answers);
       await writeFileAsync('README.md', generateContent);
       console.log('Successfully wrote to README.md');
@@ -33,7 +35,7 @@ async function init() {
 }
 // Function call to initialize app
 init();
-  
+   
 
 // // Create a function to write README file
 
