@@ -4,30 +4,75 @@ const inquirer = require("inquirer");
 const util = require('util')
 // Importing File System module
 const fs = require('fs');
-const generateMarkdown = require("./utils/generateMarkdown");
-const licenseBadge = require("./utils/badges");
-const questions = require("./utils/questions").questions;
+const generateMd = require("./utils/generateMarkdown");
 
 // // Prompts the user with questions
-// async function promptUser() {
-//   try {
-//       const answers = await inquirer.prompt(questions);
-//       return answers;
-//   } catch (error) {
-//       console.error("Error while prompting:", error);
-//       throw error;
-//   }
-// }
+function promptQuestion() {
+  return inquirer
+  .prompt([
+    {
+      type: 'input',
+      message: ' What is the title of the file? ',
+      name: 'title',
+    },
+    {
+      type: 'input',
+      message: 'What is the description of the project?',
+      name: 'description',
+    },
+    {
+      type: 'input',
+      message: 'What are the installation instructions?',
+      name: 'installation',
+    },
+    {
+      type: 'input',
+      message: 'How would you like to use this project?',
+      name: 'usage',
+    },
+    {
+      type:'input',
+      message: 'What are the contribution you could made?',
+      name: 'contribution'
+    },
+    {
+      type:'input',
+      message: 'What are the test instructions?',
+      name: 'test'
+    },
+    {
+      type: 'list',
+      message: 'What license would you like to use?',
+      name: 'licenses',
+      choices: [
+        'MIT', 
+        'Apache', 
+        'GPL', 
+        'BSD', 
+        'None'],
+    },
+    {
+      type:'input',
+      message: 'What is your GitHub username?',
+      name: 'gitname'
+    },
+    {
+          type: 'input',
+          message: 'What is your email address?',
+          name: 'email',
+      },
+  ])
+  };
 
 // Writes content to a file asynchronously
 const writeFileAsync = util.promisify(fs.writeFile);
 //initialize the app
 async function init() { 
   try {
-      const answers = await inquirer.prompt(questions);
-      answers.licenseBadge = licenseBadge(answers.license);
-      let generateContent = generateMarkdown(answers);
-      await writeFileAsync('README.md', generateContent);
+      const answers = await promptQuestion();
+      // answers.license = licenseBadge(answers.license);
+      let generateContent = generateMd(answers);
+      await writeFileAsync('./export/README.md', generateContent);
       console.log('Successfully wrote to README.md');
   } catch (error) {
       console.error('Error while writing file', error);
@@ -37,36 +82,4 @@ async function init() {
 init();
    
 
-// // Create a function to write README file
 
-// const writeToFile = (fileName, data) => {
-
-// function writeToFile(data) {
-//   fs.writeFile('README.md', data, (err) =>
-//   err? console.log(err): console.log("README file is generated and saved!")
-//   );
-// }
-
-// // Create a function to initialize app
-// // When the application start, firstly call inquirer prompts function
-// function init() {
-//   inquirer
-//     .prompt(questions)
-//     .then(answers => {
-//       const readme = generateMarkdown(answers);
-//       writeToFile(readme);
-//     })
-//     // console.log(answers);
-   
-//     // .catch(error => {
-//     //   if(error.isTtyError) {
-//     //     console.log("Prompt couldn't be rendered in the current environment")
-//     //   }else{
-//     //     console.log("Something else went wrong")
-//     //   }
-//     // })
-// }
-  
-
-// // Function call to initialize app
-// init();
