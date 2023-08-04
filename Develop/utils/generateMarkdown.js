@@ -1,28 +1,17 @@
 
-// Create a function that returns the license section of README
-// If there is no license, return an empty string
-function renderLicenseSection(license) {
-  if (license !== 'None') {
-    return `
-    ## License
-    This project is licensed under the ${license} license.
-    `;
-  }else{
-    return '';
-  }
-}
 
 // Create a function to generate markdown for README
-function generateMarkdown(data) {
+function generateMd(answers) {
   return `
   
-  # ${data.title}
+  # ${answers.title}
 
-    ${data.renderLicenseBadge}
+  ![badge](https://img.shields.io/badge/license-${answers.licenses}-brightgreen)
+    
   
   ## Description
 
-    ${data.description}
+    ${answers.description}
 
   ## Table of Contents
 
@@ -36,35 +25,30 @@ function generateMarkdown(data) {
 
   ## Installation
 
-   ${data.installation}
+   ${answers.installation}
 
   ## Usage
 
-   ${data.usage}
+   ${answers.usage}
 
   ## Contribution
 
-   ${data.contribution}
+   ${answers.contribution}
 
   ## Tests
 
-   ${data.test}
+   ${answers.test}
 
   ## License
 
-    ${data.license}
+  This application is covered by the ${answers.licenses} license. 
 
   ## Questions
 
-  If you have any questions, please don't hesitate to email me: [${data.email}](mailto:${data.email}).
-  My Github: [${data.gitname}](${data.gitname}).
+  If you have any questions, please don't hesitate to email me: [${answers.email}](mailto:${answers.email}).
+  My Github: [${answers.gitname}](${answers.gitname}).
 
 `;
 }
 
-module.exports = {
-  renderLicenseBadge,
-  renderLicenseSection,
-  generateMarkdown
-}
-
+module.exports = generateMd;
